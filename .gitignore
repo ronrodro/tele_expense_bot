@@ -67,3 +67,4 @@ package-lock.json
 
 # Yarn lock file
 yarn.lock
+*.db
