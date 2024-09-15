@@ -49,6 +49,7 @@ export class ExpenseBot {
             const userId = msg.chat.id;
             const text = msg.text || '';
 
+            if(this.userStates[userId] === Status.NONE) return;
             switch (this.userStates[userId]) 
             {
                 case Status.WAITING_FOR_DESCRIPTION:
