@@ -39,6 +39,12 @@ export class ExpenseBot {
             this.bot.sendMessage(userId, 'Por favor, ingresa el producto:');
         });
 
+        this.bot.onText(/\/cancelar/, (msg) => {
+            const userId = msg.chat.id;
+            this.userStates[userId] = Status.NONE;
+            this.bot.sendMessage(userId, 'Operación cancelada.');
+        });
+
         this.bot.on('message', (msg) => {
             const userId = msg.chat.id;
             const text = msg.text || '';
