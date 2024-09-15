@@ -17,6 +17,14 @@ enum Person
     TARJETA_CREDITO
 }
 
+enum Commands 
+{
+    CANCEL = '/cancelar',
+    GASTO = '/gasto',
+    HELP = '/help'
+    // Agrega más comandos según sea necesario
+}
+
 export class ExpenseBot {
     private bot: TelegramBot;
     private db: Database;
@@ -33,13 +41,13 @@ export class ExpenseBot {
     private InitializeBot() 
     {
         console.log(`Bot Iniciado...`);
-        this.bot.onText(/\/gasto/, (msg) => {
+        this.bot.onText(new RegExp(`^${Commands.GASTO}$`), (msg) => {
             const userId = msg.chat.id;
             this.userStates[userId] = Status.WAITING_FOR_DESCRIPTION;
             this.bot.sendMessage(userId, 'Por favor, ingresa el producto:');
         });
 
-        this.bot.onText(/\/cancelar/, (msg) => {
+        this.bot.onText(new RegExp(`^${Commands.CANCEL}$`), (msg) => {
             const userId = msg.chat.id;
             this.userStates[userId] = Status.NONE;
             this.bot.sendMessage(userId, 'Operación cancelada.');
@@ -49,7 +57,7 @@ export class ExpenseBot {
             const userId = msg.chat.id;
             const text = msg.text || '';
 
-            if(this.userStates[userId] === Status.NONE) return;
+            if (Object.values(Commands).includes(text as Commands)) return;
             switch (this.userStates[userId]) 
             {
                 case Status.WAITING_FOR_DESCRIPTION:
